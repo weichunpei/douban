@@ -1,18 +1,18 @@
 (function(angular){
-    var app=angular.module('in_theaters',['ngRoute','myJsonpService']);
+    var app=angular.module('move_list',['ngRoute','myJsonpService']);
     app.config(['$routeProvider',function($routeProvider){
-        $routeProvider.when('/in_theaters/:page?',{
+        $routeProvider.when('/:move_list/:page?',{
             templateUrl:'in_theaters/in_theaters.html',
-            controller:'in_theatersCtr'
+            controller:'move_listCtr'
         })
     }])
-    app.controller('in_theatersCtr',['$scope','$http','$routeParams','$route','myService',function($scope,$http,$routeParams,$route,myService){
+    app.controller('move_listCtr',['$scope','$http','$routeParams','$route','myService',function($scope,$http,$routeParams,$route,myService){
         $scope.loading=true;
         $scope.pageSize=5;
         $scope.page=($routeParams.page||'1')-0;
         var start=($scope.page*$scope.pageSize)-5;
         //调用服务模块方法
-        myService.myJsonp('http://api.douban.com/v2/movie/in_theaters',{start:start,count:$scope.pageSize},function(data){
+        myService.myJsonp('http://api.douban.com/v2/movie/move_list',{start:start,count:$scope.pageSize},function(data){
             $scope.loading=false;
             console.log(data)
             $scope.data=data;
