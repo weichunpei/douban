@@ -2,17 +2,27 @@
     var app=angular.module('move_list',['ngRoute','myJsonpService']);
     app.config(['$routeProvider',function($routeProvider){
         $routeProvider.when('/:move_list/:page?',{
-            templateUrl:'in_theaters/in_theaters.html',
+            templateUrl:'move_list/move_list.html',
             controller:'move_listCtr'
         })
     }])
-    app.controller('move_listCtr',['$scope','$http','$routeParams','$route','myService',function($scope,$http,$routeParams,$route,myService){
+    app.controller('move_listCtr',['$scope','$http','$routeParams','$route','$window','myService',function($scope,$http,$routeParams,$route,$window,myService){
         $scope.loading=true;
         $scope.pageSize=5;
         $scope.page=($routeParams.page||'1')-0;
         var start=($scope.page*$scope.pageSize)-5;
+        // $scope.query='';
+        // $scope.search=function(){
+        //     cons.log(111)
+        //     if(!$scope.query){
+        //         alert('请输入关键字');
+        //         return;
+        //     }
+        //     $window.location.href='#/search?q='+$scope.query
+        // }
+        // console.log($routeParams);
         //调用服务模块方法
-        myService.myJsonp('http://api.douban.com/v2/movie/move_list',{start:start,count:$scope.pageSize},function(data){
+        myService.myJsonp('http://api.douban.com/v2/movie/'+$routeParams.move_list,{start:start,count:$scope.pageSize,q:$routeParams.q},function(data){
             $scope.loading=false;
             console.log(data)
             $scope.data=data;
